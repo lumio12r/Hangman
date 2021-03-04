@@ -1,24 +1,42 @@
 import random
+import string
 
 print('H A N G M A N\n')
 
 random_word = random.choice(['python', 'java', 'kotlin', 'javascript'])
 guessed_word = "-" * len(random_word)
+letters = [i for i in string.ascii_lowercase]
+all_letters_use = []
 print(guessed_word)
 count = 0
 
 while count < 9:
     guess = input('Input a letter: ')
 
-    if guess not in random_word:
+    if len(guess) > 1:
+        print("You should input a single letter")
+        if count == 8:
+            print('You lost!')
+            break
+    elif (guess not in letters) or (guess == guess.upper()):
+        print("Please enter a lowercase English letter")
+        if count == 8:
+            print('You lost!')
+            break
+    elif (guess in all_letters_use) or (guess in guessed_word):
+        print("You've already guessed this letter")
+        if count == 8:
+            print('You lost!')
+            break
+    elif guess not in random_word:
         print("That letter doesn't appear in the word")
+        all_letters_use.append(guess)
         count += 1
         if count == 8:
             print('You lost!')
             break
     elif guess in guessed_word:
         print("No improvements")
-        count += 1
         if count == 8:
             print('You lost!')
             break
@@ -30,3 +48,5 @@ while count < 9:
                     print('You guessed the word!\nYou survived!')
                     exit()
     print(f'\n{guessed_word}')
+
+
